@@ -10,12 +10,11 @@
 
 👉 妙趣横生，博君一乐 🤣
 
-宾果游戏持续收集中，欢迎提PR~
+宾果游戏持续收集中，欢迎提 PR~
 
 </div>
 
-> [!CAUTION]
-> **多图预警**
+> [!CAUTION] > **多图预警**
 
 > [!IMPORTANT]  
 > 图片来源自互联网，版权为其创作者所有。
@@ -201,4 +200,22 @@
   <summary><b>人生</b> 👉 平凡幸福模式*</summary>
   
   ![人生](./bingo-games/人生.jpg)
+</details>
+
+<details>
+  <summary><b>エロ身体</b> 👉 连成一线你就拥有一副十分色情的身体，你这辈子就算完了</summary>
+  
+  ![エロ身体](./bingo-games/エロ身体.jpg)
+</details>
+
+<details>
+  <summary><b>成功人士</b> 👉 五个连起来你就是成功人士！</summary>
+  
+  ![成功人士](./bingo-games/成功人士.jpg)
+</details>
+
+<details>
+  <summary><b>男娘</b> 👉 4个连在一起你就是男娘，5个连在一起你就是木桶饭</summary>
+  
+  ![男娘](./bingo-games/男娘.jpg)
 </details>
