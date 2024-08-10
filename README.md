@@ -174,6 +174,12 @@
 </details>
 
 <details>
+  <summary><b>Bukkit系开发 (Minecraft)</b> 👉 连成一条线说明你是一个合格的 Minecraft 开发者</summary>
+  
+  ![Minecraft “建筑”团队/组织/社区](./bingo-games/Bukkit系开发.jpg)
+</details>
+
+<details>
   <summary><b>地偶</b> 👉 五个连成一线的话你就是臭噶比</summary>
   
   ![地偶](./bingo-games/地偶.jpg)
