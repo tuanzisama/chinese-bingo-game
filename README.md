@@ -220,3 +220,15 @@
   
   ![男娘](./bingo-games/男娘.jpg)
 </details>
+
+<details>
+  <summary><b>数码痴</b> 👉 连成线你就是数码痴</summary>
+  
+  ![数码痴](./bingo-games/数码痴.jpg)
+</details>
+
+<details>
+  <summary><b>音游</b> 👉 如果玩过五个连成一线的话你就是一个无药可救的音游痴！</summary>
+  
+  ![音游](./bingo-games/音游.jpg)
+</details>
