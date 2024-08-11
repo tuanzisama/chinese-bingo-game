@@ -14,7 +14,8 @@
 
 </div>
 
-> [!CAUTION] > **多图预警**
+> [!CAUTION]
+> **多图预警**
 
 > [!IMPORTANT]  
 > 图片来源自互联网，版权为其创作者所有。
@@ -218,6 +219,18 @@
   <summary><b>男娘</b> 👉 4个连在一起你就是男娘，5个连在一起你就是木桶饭</summary>
   
   ![男娘](./bingo-games/男娘.jpg)
+</details>
+
+<details>
+  <summary><b>数码痴</b> 👉 连成线你就是数码痴</summary>
+  
+  ![数码痴](./bingo-games/数码痴.jpg)
+</details>
+
+<details>
+  <summary><b>音游</b> 👉 如果玩过五个连成一线的话你就是一个无药可救的音游痴！</summary>
+  
+  ![音游](./bingo-games/音游.jpg)
 </details>
 
 <details>
