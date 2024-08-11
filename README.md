@@ -219,3 +219,9 @@
   
   ![男娘](./bingo-games/男娘.jpg)
 </details>
+
+<details>
+  <summary><b>Good青春(极难版)</b> 👉 五个连成一条线，说明你有一个非常幸福的青春，恭喜你！</summary>
+  
+  ![Good青春(极难版)](./bingo-games/Good青春(极难版).jpg)
+</details>
