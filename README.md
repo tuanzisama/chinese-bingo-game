@@ -19,6 +19,7 @@
 
 > [!IMPORTANT]  
 > 图片来源自互联网，版权为其创作者所有。
+> 此仓库仅作收集，不对其内容负责。
 > <u>**禁止商用**</u>
 
 ## 宾果游戏
@@ -138,6 +139,12 @@
 </details>
 
 <details>
+  <summary><b>身份证号</b></summary>
+  
+  ![身份证号](./bingo-games/身份证号.jpg)
+</details>
+
+<details>
   <summary><b>M记</b> 👉 五个连成一线你就是M批</summary>
   
   ![M记](./bingo-games/M记.jpg)
@@ -243,4 +250,10 @@
   <summary><b>Good青春(极难版)</b> 👉 五个连成一条线，说明你有一个非常幸福的青春，恭喜你！</summary>
   
   ![Good青春(极难版)](./bingo-games/Good青春(极难版).jpg)
+</details>
+
+<details>
+  <summary><b>鹿管</b> 👉 五个连成一线证明你喜欢鹿管（限定 18 岁以上才能玩）</summary>
+  
+  ![鹿管](./bingo-games/鹿管.jpg)
 </details>
