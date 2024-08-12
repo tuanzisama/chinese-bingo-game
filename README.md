@@ -42,7 +42,7 @@
 </details>
 
 <details>
-  <summary><b>废物(改)</b> 👉 五个连成一条线的花你就是纯废物！</summary>
+  <summary><b>废物(改)</b> 👉 五个连成一线或中十条的早点重开吧</summary>
   
   ![废物(改)](./bingo-games/废物(改).png)
 </details>
@@ -51,6 +51,12 @@
   <summary><b>废物2</b> 👉 一个连成一线的花你就是纯废物！</summary>
   
   ![废物宾果2](./bingo-games/废物2.jpeg)
+</details>
+
+<details>
+  <summary><b>废物3</b> 👉 一个连成一线的花你就是纯废物！</summary>
+  
+  ![废物宾果2](./bingo-games/废物3.jpg)
 </details>
 
 <details>
