@@ -193,6 +193,18 @@
 </details>
 
 <details>
+  <summary><b>Minecraft专业能力</b> 👉 满足任何5个就是</summary>
+  
+  ![Minecraft专业能力](./bingo-games/Minecraft专业能力.jpg)
+</details>
+
+<details>
+  <summary><b>Minecraft服务器管理员</b> 👉 五个连成一线的话你就丸辣！</summary>
+  
+  ![Minecraft服务器管理员](./bingo-games/Minecraft服务器管理员.jpg)
+</details>
+
+<details>
   <summary><b>地偶</b> 👉 五个连成一线的话你就是臭噶比</summary>
   
   ![地偶](./bingo-games/地偶.jpg)
@@ -256,4 +268,16 @@
   <summary><b>鹿管</b> 👉 五个连成一线证明你喜欢鹿管（限定 18 岁以上才能玩）</summary>
   
   ![鹿管](./bingo-games/鹿管.jpg)
+</details>
+
+<details>
+  <summary><b>美食大师</b> 👉 五个连成一线说明你是美食大师</summary>
+  
+  ![美食大师](./bingo-games/美食大师.jpg)
+</details>
+
+<details>
+  <summary><b>真名</b> 👉 在下方写下自己的真实姓名</summary>
+  
+  ![真名](./bingo-games/真名.png)
 </details>
