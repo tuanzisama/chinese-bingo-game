@@ -281,3 +281,15 @@
   
   ![真名](./bingo-games/真名.png)
 </details>
+
+<details>
+  <summary><b>舔狗</b> 👉 五个连城一条线，你就是个标准的舔狗</summary>
+  
+  ![舔狗](./bingo-games/舔狗.png)
+</details>
+
+<details>
+  <summary><b>贫乳控</b> 👉 五个连成一线你就是没奶兹爱好者</summary>
+  
+  ![贫乳控](./bingo-games/贫乳控.jpg)
+</details>
