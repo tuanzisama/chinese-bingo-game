@@ -1,56 +1,53 @@
 <template>
-  <div v-if="isVisible" class="modal-overlay" @click="closeModal">
+  <div v-if="isVisible" class="modal-overlay">
     <div class="modal-content" @click.stop>
       <div class="modal-header">
         <h3>{{ game.gameName }} - 绘画模式</h3>
         <button class="close-btn" @click="closeModal">×</button>
       </div>
 
-      <div class="drawing-tools">
-        <div class="tool-group">
-          <label>画笔颜色:</label>
-          <input type="color" v-model="brushColor" @change="updateBrushColor" class="color-picker" />
+      <div class="modal-body">
+        <div class="drawing-tools">
+          <div class="tool-group">
+            <label>画笔颜色:</label>
+            <input type="color" v-model="brushColor" @change="updateBrushColor" class="color-picker" />
+          </div>
+
+          <div class="tool-group">
+            <label>画笔粗细:</label>
+            <input type="range" min="1" max="20" v-model="brushWidth" @input="updateBrushWidth" class="width-slider" />
+            <span class="width-display">{{ brushWidth }}px</span>
+          </div>
+
+          <div class="tool-group">
+            <button @click="clearCanvas" class="tool-btn clear-btn">清除画布</button>
+            <button @click="toggleEraser" :class="['tool-btn', { active: isErasing }]">
+              {{ isErasing ? "画笔模式" : "橡皮擦" }}
+            </button>
+          </div>
         </div>
 
-        <div class="tool-group">
-          <label>画笔粗细:</label>
-          <input type="range" min="1" max="20" v-model="brushWidth" @input="updateBrushWidth" class="width-slider" />
-          <span class="width-display">{{ brushWidth }}px</span>
+        <div class="canvas-container">
+          <canvas ref="canvasElement" :width="canvasWidth" :height="canvasHeight"></canvas>
         </div>
-
-        <div class="tool-group">
-          <button @click="clearCanvas" class="tool-btn clear-btn">清除画布</button>
-          <button @click="toggleEraser" :class="['tool-btn', { active: isErasing }]">
-            {{ isErasing ? '画笔模式' : '橡皮擦' }}
-          </button>
-        </div>
-      </div>
-
-      <div class="canvas-container">
-        <canvas ref="canvasElement" :width="canvasWidth" :height="canvasHeight"></canvas>
       </div>
 
       <div class="modal-actions">
-        <button @click="downloadCanvas" class="action-btn download-btn">
-          📥 下载图片
-        </button>
-        <button @click="copyCanvas" class="action-btn copy-btn">
-          📋 复制到剪贴板
-        </button>
-        <button @click="resetCanvas" class="action-btn reset-btn">
-          🔄 重置画布
-        </button>
+        <button @click="downloadCanvas" class="action-btn download-btn">📥 下载图片</button>
+        <button @click="copyCanvas" class="action-btn copy-btn">📋 复制到剪贴板</button>
+        <button @click="resetCanvas" class="action-btn reset-btn">🔄 重置画布</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, watch, nextTick } from 'vue';
-import { Canvas, PencilBrush, FabricImage, util } from 'fabric';
-import { EraserBrush } from '@erase2d/fabric';
-import type { BingoGame } from '../types';
-import { useIsTransparentWorker } from '../composables/useIsTransparent';
+import { ref, onUnmounted, shallowRef, onMounted, reactive } from "vue";
+import { Canvas, PencilBrush, FabricImage, util, FabricText } from "fabric";
+import { EraserBrush } from "@erase2d/fabric";
+import type { BingoGame } from "../types";
+import { useIsTransparentWorker } from "../composables/useIsTransparent";
+import { useUrlParams } from "../composables/useUrlParams";
 
 interface Props {
   isVisible: boolean;
@@ -58,63 +55,84 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'close'): void;
+  (e: "close"): void;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const isTransparent = useIsTransparentWorker();
+const { clearGameParam } = useUrlParams();
 const canvasElement = ref<HTMLCanvasElement | null>(null);
 const fabricCanvas = ref<Canvas | null>(null);
 
 // 绘画工具状态
-const brushColor = ref('#ff0000');
+const brushColor = ref("#ff0000");
 const brushWidth = ref(5);
 const isErasing = ref(false);
+
+const isSmallScreen = ref(false);
 
 // Canvas 尺寸 - 响应式设计
 const canvasWidth = ref(800);
 const canvasHeight = ref(600);
+const imageEl = shallowRef<HTMLImageElement | null>(null);
 
-// 计算响应式画布尺寸
-const calculateCanvasSize = () => {
-  const maxWidth = Math.min(window.innerWidth * 0.8, 800);
-  const maxHeight = Math.min(window.innerHeight * 0.6, 600);
+const canvasPadding = reactive({ top: 20, left: 20, bottom: 20, right: 20 });
+const watermarkHeight = ref(40);
 
-  // const aspectRatio = 9 / 16
-  const aspectRatio = 0.8
+// 计算响应式画布尺寸，基于图片实际尺寸
+const calculateCanvasSize = (imgWidth: number, imgHeight: number) => {
+  // 设置窗口尺寸限制
+  const isMobile = window.innerWidth <= 768;
 
-  let newWidth = maxWidth;
-  let newHeight = newWidth / aspectRatio;
+  const maxWidthRatio = isMobile ? 0.9 : 0.8;
+  const maxHeightRatio = isMobile ? 0.6 : 0.7;
+
+  const maxWidth = window.innerWidth * maxWidthRatio;
+  const maxHeight = window.innerHeight * maxHeightRatio;
+
+  // 计算图片的宽高比
+  const aspectRatio = imgWidth / imgHeight;
+
+  let newWidth = imgWidth;
+  let newHeight = imgHeight;
+
+  // 如果图片尺寸超过窗口限制，按比例缩放
+  if (newWidth > maxWidth) {
+    newWidth = maxWidth;
+    newHeight = newWidth / aspectRatio;
+  }
 
   if (newHeight > maxHeight) {
     newHeight = maxHeight;
     newWidth = newHeight * aspectRatio;
   }
 
-  // 移动端特殊处理
-  if (window.innerWidth <= 768) {
-    newWidth = Math.min(window.innerWidth * 0.8, 600);
-    newHeight = newWidth / aspectRatio;
-  }
-
-  canvasWidth.value = Math.floor(newWidth);
-  canvasHeight.value = Math.floor(newHeight);
+  canvasWidth.value = Math.floor(newWidth) + canvasPadding.left;
+  canvasHeight.value = Math.floor(newHeight) + watermarkHeight.value + canvasPadding.top;
 };
 
 // 初始化 Fabric.js Canvas
 const initCanvas = async () => {
   if (!canvasElement.value) return;
 
-  // 计算响应式尺寸
-  calculateCanvasSize();
+  if (!imageEl.value) {
+    imageEl.value = await loadImage();
+  }
+
+  // 基于图片实际尺寸计算画布尺寸
+  const imgWidth = imageEl.value.naturalWidth || imageEl.value.width;
+  const imgHeight = imageEl.value.naturalHeight || imageEl.value.height;
+
+  calculateCanvasSize(imgWidth, imgHeight);
 
   fabricCanvas.value = new Canvas(canvasElement.value, {
     isDrawingMode: true,
     width: canvasWidth.value,
     height: canvasHeight.value,
-    backgroundColor: 'white'
+    backgroundColor: "white",
+    enableRetinaScaling: true,
   });
 
   // 初始化画笔
@@ -125,46 +143,77 @@ const initCanvas = async () => {
   updateBrushWidth();
 
   // 加载背景图片
-  await loadBackgroundImage();
+  await loadBackgroundImage(imageEl.value!);
+};
+
+const loadImage = async () => {
+  return util.loadImage(props.game.githubUrl, { crossOrigin: "anonymous" });
 };
 
 // 加载背景图片
-const loadBackgroundImage = async () => {
+const loadBackgroundImage = async (imgEl: HTMLImageElement) => {
   if (!fabricCanvas.value) return;
 
   try {
-    const img = await util.loadImage(props.game.githubUrl, { crossOrigin: 'anonymous' });
-    const fabricImg = new FabricImage(img);
+    const fabricImg = new FabricImage(imgEl, {
+      imageSmoothing: true,
+    });
 
-    // 计算图片缩放比例以适应画布
+    // 由于画布尺寸已经基于图片尺寸计算，直接缩放图片填满画布
     const imgWidth = fabricImg.width || 1;
     const imgHeight = fabricImg.height || 1;
-    const scaleX = canvasWidth.value / imgWidth;
-    const scaleY = canvasHeight.value / imgHeight;
-    const scale = Math.min(scaleX, scaleY);
+    const scaleX = (canvasWidth.value - canvasPadding.left - canvasPadding.right) / imgWidth;
+    const scaleY = (canvasHeight.value - watermarkHeight.value - canvasPadding.top) / imgHeight;
 
     fabricImg.set({
-      scaleX: scale,
-      scaleY: scale,
-      left: (canvasWidth.value - imgWidth * scale) / 2,
-      top: (canvasHeight.value - imgHeight * scale) / 2,
+      scaleX: scaleX,
+      scaleY: scaleY,
+      left: canvasPadding.left,
+      top: canvasPadding.top,
       selectable: false,
       evented: false,
-      erasable: false  // 防止背景图片被橡皮擦擦除
+      erasable: false, // 防止背景图片被橡皮擦擦除
     });
 
     fabricCanvas.value.add(fabricImg);
     fabricCanvas.value.sendObjectToBack(fabricImg);
-    fabricCanvas.value.renderAll();
 
-    fabricCanvas.value.on('path:created', (e) => {
-      console.info('path:created', e.path);
+    const textConfig = {
+      fontSize: 14,
+      fontFamily: "Noto Sans SC, Barlow",
+    };
+
+    const text1 = `${truncateString(props.game.gameName, 18)} #中文互联网的宾果游戏`;
+    const text2 = `👉 ${location.origin}`;
+
+    const fabricText = new FabricText(text1, { ...textConfig, fill: "#757575" });
+    const fabricText2 = new FabricText(text2, { ...textConfig, fill: "#BDBDBD" });
+
+    fabricText.top = canvasHeight.value - watermarkHeight.value + fabricText.height * 0.6;
+    fabricText.left = canvasPadding.left;
+
+    if (isSmallScreen.value) {
+      fabricText2.left = canvasPadding.left;
+      fabricText2.top = fabricText.top + fabricText.height + 5; // 5 is the spacing between two lines
+    } else {
+      fabricText2.top = canvasHeight.value - watermarkHeight.value + fabricText2.height * 0.6;
+      fabricText2.left = canvasWidth.value - canvasPadding.right - fabricText2.width;
+    }
+
+    fabricCanvas.value.add(fabricText);
+    fabricCanvas.value.add(fabricText2);
+
+    fabricCanvas.value.sendObjectToBack(fabricText);
+    fabricCanvas.value.sendObjectToBack(fabricText2);
+    fabricCanvas.value.requestRenderAll();
+
+    fabricCanvas.value.on("path:created", (e) => {
       if (!isErasing.value) {
         e.path.set({ erasable: true });
       }
     });
   } catch (error) {
-    console.error('加载背景图片失败:', error);
+    console.error("加载背景图片失败:", error);
   }
 };
 
@@ -190,7 +239,6 @@ const setPencilMode = () => {
   isErasing.value = false;
   fabricCanvas.value.freeDrawingBrush = new PencilBrush(fabricCanvas.value as Canvas);
 
-
   updateBrushColor();
   updateBrushWidth();
 };
@@ -206,27 +254,20 @@ const setEraserMode = () => {
   fabricCanvas.value.freeDrawingBrush = eraser;
   fabricCanvas.value.freeDrawingBrush.width = parseInt(brushWidth.value.toString());
 
-  eraser.on('end', async (e) => {
+  eraser.on("end", async (e) => {
     e.preventDefault();
 
     await eraser.commit(e.detail);
 
-    const transparent = await Promise.all(
-      e.detail.targets.map(
-        async (target) => [target, await isTransparent(target)] as const
-      )
-    );
+    const transparent = await Promise.all(e.detail.targets.map(async (target) => [target, await isTransparent(target)] as const));
 
     if (fabricCanvas.value) {
-      const fullyErased = transparent
-        .filter(([, transparent]) => transparent)
-        .map(([object]) => object);
+      const fullyErased = transparent.filter(([, transparent]) => transparent).map(([object]) => object);
 
       fullyErased.forEach((object) => (object.parent || fabricCanvas.value)?.remove(object));
       fabricCanvas.value.requestRenderAll();
     }
   });
-
 };
 
 // 切换橡皮擦模式
@@ -248,9 +289,10 @@ const clearCanvas = () => {
   const backgroundImg = objects[0]; // 假设背景图片是第一个对象
 
   fabricCanvas.value.clear();
-  if (backgroundImg && backgroundImg.type === 'image') {
+  if (backgroundImg && backgroundImg.type === "image") {
     fabricCanvas.value.add(backgroundImg);
   }
+  fabricCanvas.value.backgroundColor = "white";
   fabricCanvas.value.renderAll();
 };
 
@@ -258,8 +300,8 @@ const clearCanvas = () => {
 const resetCanvas = async () => {
   if (!fabricCanvas.value) return;
   fabricCanvas.value.clear();
-  fabricCanvas.value.backgroundColor = 'white';
-  await loadBackgroundImage();
+  fabricCanvas.value.backgroundColor = "white";
+  await loadBackgroundImage(imageEl.value!);
 };
 
 // 下载画布内容
@@ -267,12 +309,12 @@ const downloadCanvas = () => {
   if (!fabricCanvas.value) return;
 
   const dataURL = fabricCanvas.value.toDataURL({
-    format: 'png',
+    format: "png",
     quality: 1,
-    multiplier: 2
+    multiplier: 2,
   });
 
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.download = `${props.game.gameName}_绘画.png`;
   link.href = dataURL;
   link.click();
@@ -284,9 +326,9 @@ const copyCanvas = async () => {
 
   try {
     const dataURL = fabricCanvas.value.toDataURL({
-      format: 'png',
+      format: "png",
       quality: 1,
-      multiplier: 2
+      multiplier: 2,
     });
 
     // 将 dataURL 转换为 Blob
@@ -294,41 +336,55 @@ const copyCanvas = async () => {
     const blob = await response.blob();
 
     // 复制到剪贴板
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob })
-    ]);
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
 
-    alert('画布内容已复制到剪贴板！');
+    alert("画布内容已复制到剪贴板！");
   } catch (error) {
-    console.error('复制失败:', error);
-    alert('复制失败，请尝试下载功能');
+    console.error("复制失败:", error);
+    alert("复制失败，请尝试下载功能");
   }
+};
+
+const truncateString = (str: string, maxLength: number) => {
+  if (str.length <= maxLength) return str;
+  return str.substring(0, maxLength) + "...";
 };
 
 // 关闭弹窗
 const closeModal = () => {
-  emit('close');
+  // 清除URL参数
+  clearGameParam();
+  emit("close");
 };
 
-// 监听弹窗显示状态
-watch(() => props.isVisible, async (newVal) => {
-  if (newVal) {
-    await nextTick();
-    initCanvas();
-  } else {
-    // 清理 Canvas
-    if (fabricCanvas.value) {
-      fabricCanvas.value.dispose();
-      fabricCanvas.value = null;
-    }
+// 监听浏览器前进/后退事件
+const handlePopState = () => {
+  // 如果URL中没有game参数，说明用户点击了后退，应该关闭弹窗
+  const urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.get('game')) {
+    emit("close");
   }
+};
+
+onMounted(() => {
+  isSmallScreen.value = window.innerWidth <= 768;
+  canvasPadding.bottom = isSmallScreen.value ? 50 : 20;
+  watermarkHeight.value = isSmallScreen.value ? 60 : 40;
+  initCanvas();
+  
+  // 监听浏览器前进/后退事件
+  window.addEventListener('popstate', handlePopState);
 });
 
 // 组件卸载时清理
 onUnmounted(() => {
   if (fabricCanvas.value) {
     fabricCanvas.value.dispose();
+    fabricCanvas.value = null;
   }
+  
+  // 清理事件监听器
+  window.removeEventListener('popstate', handlePopState);
 });
 </script>
 
@@ -354,14 +410,24 @@ onUnmounted(() => {
   max-height: 90vh;
   overflow: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.modal-body {
+  flex: 1;
+  position: relative;
+  height: 0;
+  overflow: auto;
 }
 
 .modal-header h3 {
@@ -461,7 +527,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   background: #f8f9fa;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .canvas-container canvas {
@@ -475,10 +541,11 @@ onUnmounted(() => {
 .modal-actions {
   display: flex;
   gap: 6px;
-  padding: 20px;
+  padding: 10px 20px;
   justify-content: center;
   flex-wrap: wrap;
   border-top: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .action-btn {
@@ -530,7 +597,8 @@ onUnmounted(() => {
   .drawing-tools {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 5px;
+    padding: 5px 20px;
   }
 
   .tool-group {

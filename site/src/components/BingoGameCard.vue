@@ -35,13 +35,14 @@
   </div>
 
   <!-- 绘画弹窗 -->
-  <BingoDrawingModal :is-visible="showDrawingModal" :game="props.game" @close="closeDrawingModal" />
+  <BingoDrawingModal v-if="showDrawingModal" :is-visible="true" :game="props.game" @close="closeDrawingModal" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import type { BingoGame } from '../types';
 import { useLazyImage } from '../composables/useLazyImage';
+import { useUrlParams } from '../composables/useUrlParams';
 import BingoDrawingModal from './BingoDrawingModal.vue';
 
 interface Props {
@@ -52,6 +53,9 @@ const props = defineProps<Props>();
 
 const imageRef = ref<HTMLImageElement | null>(null);
 const showDrawingModal = ref(false);
+
+// 使用URL参数管理
+const { setGameParam, getGameNameFromFilename } = useUrlParams();
 
 // 使用懒加载composable
 const { isLoaded, isLoading, hasError, loadImage } = useLazyImage(
@@ -72,6 +76,9 @@ const retryLoad = () => {
 const openDrawingModal = () => {
   if (isLoaded.value && !hasError.value) {
     showDrawingModal.value = true;
+    // 设置URL参数
+    const gameName = getGameNameFromFilename(props.game.filename);
+    setGameParam(gameName);
   }
 };
 
@@ -79,6 +86,38 @@ const openDrawingModal = () => {
 const closeDrawingModal = () => {
   showDrawingModal.value = false;
 };
+
+// 监听从URL打开游戏的事件
+const handleOpenGameFromUrl = (event: CustomEvent) => {
+  const { game } = event.detail;
+  if (game && game.filename === props.game.filename) {
+    // 确保图片已加载
+    if (isLoaded.value && !hasError.value) {
+      showDrawingModal.value = true;
+    } else {
+      // 如果图片还没加载，等待加载完成
+      const checkLoaded = () => {
+        if (isLoaded.value && !hasError.value) {
+          showDrawingModal.value = true;
+        } else if (!hasError.value) {
+          // 继续等待
+          setTimeout(checkLoaded, 100);
+        }
+      };
+      checkLoaded();
+    }
+  }
+};
+
+onMounted(() => {
+  // 监听从URL打开游戏的事件
+  window.addEventListener('openGameFromUrl', handleOpenGameFromUrl as EventListener);
+});
+
+onUnmounted(() => {
+  // 清理事件监听器
+  window.removeEventListener('openGameFromUrl', handleOpenGameFromUrl as EventListener);
+});
 </script>
 
 <style scoped>
