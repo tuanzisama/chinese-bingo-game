@@ -73,13 +73,42 @@ const brushColor = ref('#ff0000');
 const brushWidth = ref(5);
 const isErasing = ref(false);
 
-// Canvas 尺寸
+// Canvas 尺寸 - 响应式设计
 const canvasWidth = ref(800);
 const canvasHeight = ref(600);
+
+// 计算响应式画布尺寸
+const calculateCanvasSize = () => {
+  const maxWidth = Math.min(window.innerWidth * 0.8, 800);
+  const maxHeight = Math.min(window.innerHeight * 0.6, 600);
+
+  // const aspectRatio = 9 / 16
+  const aspectRatio = 0.8
+
+  let newWidth = maxWidth;
+  let newHeight = newWidth / aspectRatio;
+
+  if (newHeight > maxHeight) {
+    newHeight = maxHeight;
+    newWidth = newHeight * aspectRatio;
+  }
+
+  // 移动端特殊处理
+  if (window.innerWidth <= 768) {
+    newWidth = Math.min(window.innerWidth * 0.8, 600);
+    newHeight = newWidth / aspectRatio;
+  }
+
+  canvasWidth.value = Math.floor(newWidth);
+  canvasHeight.value = Math.floor(newHeight);
+};
 
 // 初始化 Fabric.js Canvas
 const initCanvas = async () => {
   if (!canvasElement.value) return;
+
+  // 计算响应式尺寸
+  calculateCanvasSize();
 
   fabricCanvas.value = new Canvas(canvasElement.value, {
     isDrawingMode: true,
@@ -105,9 +134,7 @@ const loadBackgroundImage = async () => {
 
   try {
     const img = await util.loadImage(props.game.githubUrl, { crossOrigin: 'anonymous' });
-    const fabricImg = new FabricImage(img, {
-
-    });
+    const fabricImg = new FabricImage(img);
 
     // 计算图片缩放比例以适应画布
     const imgWidth = fabricImg.width || 1;
@@ -434,28 +461,32 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   background: #f8f9fa;
+  overflow: auto;
 }
 
 .canvas-container canvas {
   border: 2px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
 }
 
 .modal-actions {
   display: flex;
-  gap: 12px;
+  gap: 6px;
   padding: 20px;
   justify-content: center;
+  flex-wrap: wrap;
   border-top: 1px solid #eee;
 }
 
 .action-btn {
-  padding: 10px 20px;
+  padding: 5px 8px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   transition: all 0.2s ease;
   display: flex;
@@ -508,10 +539,6 @@ onUnmounted(() => {
 
   .canvas-container {
     padding: 10px;
-  }
-
-  .modal-actions {
-    flex-direction: column;
   }
 }
 </style>
