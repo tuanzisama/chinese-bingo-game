@@ -18,7 +18,7 @@
 // 这个组件不需要任何 props 或逻辑
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* 页脚样式 */
 .page-footer {
   margin-top: 64px;
@@ -44,10 +44,10 @@
 .commercial-warning {
   font-size: 13px;
   color: #d73527;
-}
 
-.commercial-warning strong {
-  font-weight: 600;
+  strong {
+    font-weight: 600;
+  }
 }
 
 .disclaimer {

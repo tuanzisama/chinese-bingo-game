@@ -64,7 +64,7 @@ const filteredGames = computed(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bingo-games-list {
   width: 100%;
   height: 100%;
@@ -88,11 +88,11 @@ const filteredGames = computed(() => {
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.2s ease;
-}
 
-.search-input:focus {
-  outline: none;
-  border-color: #007bff;
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
 }
 
 .loading-state,
@@ -132,10 +132,10 @@ const filteredGames = computed(() => {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
 
-.retry-button:hover {
-  background: #0056b3;
+  &:hover {
+    background: #0056b3;
+  }
 }
 
 .games-grid {

@@ -8,7 +8,7 @@
 import BingoGamesList from "./BingoGamesList.vue";
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .app-container {
   max-width: 1200px;
   margin: 0 auto;

@@ -120,7 +120,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bingo-card {
   background: white;
   border-radius: 12px;
@@ -131,15 +131,15 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-}
 
-.bingo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 
-.bingo-card:hover .drawing-hint {
-  opacity: 1;
+    .drawing-hint {
+      opacity: 1;
+    }
+  }
 }
 
 .card-image {
@@ -160,27 +160,27 @@ onUnmounted(() => {
     height: 80%;
     background: linear-gradient(180deg, rgba(245, 245, 245, 0) 20%, rgba(245, 245, 245, 0.95) 100%);
   }
-}
 
-.card-image img {
-  width: 100%;
-  height: auto;
-  /* height: 100%;
-  object-fit: cover; */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-}
+  img {
+    width: 100%;
+    height: auto;
+    /* height: 100%;
+    object-fit: cover; */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
 
-.card-image img.loading {
-  opacity: 0;
-}
+    &.loading {
+      opacity: 0;
+    }
 
-.card-image img.loaded {
-  opacity: 1;
-}
+    &.loaded {
+      opacity: 1;
+    }
 
-.card-image img.error {
-  display: none;
+    &.error {
+      display: none;
+    }
+  }
 }
 
 .loading-placeholder,
@@ -214,10 +214,10 @@ onUnmounted(() => {
   font-size: 12px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
 
-.retry-btn:hover {
-  background: #0056b3;
+  &:hover {
+    background: #0056b3;
+  }
 }
 
 .drawing-hint {

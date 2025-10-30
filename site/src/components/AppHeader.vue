@@ -46,23 +46,23 @@ const newPrUrl = computed(() =>
 .list-header {
   text-align: center;
   margin: 80px 0;
-}
 
-.list-header h1 {
-  margin: 0 0 8px 0;
-  font-size: 32px;
-  font-weight: 700;
-  color: #333;
+  h1 {
+    margin: 0 0 8px 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+  }
 }
 
 .metadata {
   margin: 0;
   color: #666;
   font-size: 16px;
-}
 
-.metadata strong {
-  color: #007bff;
+  strong {
+    color: #007bff;
+  }
 }
 
 .update-time {
@@ -90,11 +90,11 @@ const newPrUrl = computed(() =>
   border-radius: 8px;
   background: #fff;
   transition: all 0.2s ease;
-}
 
-.repo-link:hover {
-  background: #f5f5f5;
-  border-color: #d0d0d0;
+  &:hover {
+    background: #f5f5f5;
+    border-color: #d0d0d0;
+  }
 }
 
 .github-icon {
@@ -117,18 +117,20 @@ const newPrUrl = computed(() =>
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.2s ease;
+
   &.plain {
     background: #fff;
     color: #007bff;
     border: 1px solid #007bff;
+
     &:hover {
       background: #f5f5f5;
     }
   }
-}
 
-.pr-button:hover {
-  background: #0056b3;
+  &:hover {
+    background: #0056b3;
+  }
 }
 
 .sr-only {

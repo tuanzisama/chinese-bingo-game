@@ -388,7 +388,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -421,6 +421,12 @@ onUnmounted(() => {
   padding: 10px 20px;
   border-bottom: 1px solid #eee;
   flex-shrink: 0;
+
+  h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+  }
 }
 
 .modal-body {
@@ -428,12 +434,6 @@ onUnmounted(() => {
   position: relative;
   height: 0;
   overflow: auto;
-}
-
-.modal-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 18px;
 }
 
 .close-btn {
@@ -450,10 +450,10 @@ onUnmounted(() => {
   justify-content: center;
   border-radius: 50%;
   transition: background-color 0.2s ease;
-}
 
-.close-btn:hover {
-  background: #f0f0f0;
+  &:hover {
+    background: #f0f0f0;
+  }
 }
 
 .drawing-tools {
@@ -470,12 +470,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-}
 
-.tool-group label {
-  font-size: 14px;
-  color: #555;
-  white-space: nowrap;
+  label {
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+  }
 }
 
 .color-picker {
@@ -504,22 +504,24 @@ onUnmounted(() => {
   cursor: pointer;
   font-size: 12px;
   transition: all 0.2s ease;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+
+  &.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
 }
 
-.tool-btn:hover {
-  background: #f0f0f0;
-}
-
-.tool-btn.active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.clear-btn:hover {
-  background: #dc3545;
-  color: white;
-  border-color: #dc3545;
+.clear-btn {
+  &:hover {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+  }
 }
 
 .canvas-container {
@@ -528,14 +530,14 @@ onUnmounted(() => {
   justify-content: center;
   background: #f8f9fa;
   overflow: hidden;
-}
 
-.canvas-container canvas {
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  height: auto;
+  canvas {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .modal-actions {
@@ -564,28 +566,28 @@ onUnmounted(() => {
 .download-btn {
   background: #28a745;
   color: white;
-}
 
-.download-btn:hover {
-  background: #218838;
+  &:hover {
+    background: #218838;
+  }
 }
 
 .copy-btn {
   background: #17a2b8;
   color: white;
-}
 
-.copy-btn:hover {
-  background: #138496;
+  &:hover {
+    background: #138496;
+  }
 }
 
 .reset-btn {
   background: #6c757d;
   color: white;
-}
 
-.reset-btn:hover {
-  background: #5a6268;
+  &:hover {
+    background: #5a6268;
+  }
 }
 
 @media (max-width: 768px) {
