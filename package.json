@@ -1,0 +1,32 @@
+{
+  "name": "chinese-bingo-game",
+  "version": "1.0.0",
+  "description": "中文互联网的宾果游戏收集项目",
+  "scripts": {
+    "generate": "node scripts/generate-bingo-list.js",
+    "test": "node scripts/generate-bingo-list.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuanzisama/chinese-bingo-game.git"
+  },
+  "keywords": [
+    "bingo",
+    "game",
+    "chinese",
+    "internet",
+    "culture",
+    "meme"
+  ],
+  "author": "tuanzisama",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tuanzisama/chinese-bingo-game/issues"
+  },
+  "homepage": "https://github.com/tuanzisama/chinese-bingo-game#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

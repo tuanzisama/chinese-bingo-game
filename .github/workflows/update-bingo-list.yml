@@ -1,0 +1,58 @@
+name: Update Bingo Games List
+
+on:
+  push:
+    paths:
+      - 'bingo-games/**'
+  pull_request:
+    paths:
+      - 'bingo-games/**'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  update-bingo-list:
+    runs-on: ubuntu-latest
+    
+    env:
+      TZ: Asia/Shanghai
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: latest
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Generate bingo games JSON
+      run: node scripts/generate-bingo-list.js
+
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Commit and push changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add bingo-games-list.json
+        git commit -m "Auto-update bingo games list [skip ci]"
+        git push
