@@ -1,11 +1,15 @@
 <template>
   <div class="bingo-card" @click="openDrawingModal">
     <div class="card-image">
-      <img ref="imageRef" :alt="game.gameName" :class="{
-        'loading': isLoading,
-        'error': hasError,
-        'loaded': isLoaded
-      }" />
+      <img
+        ref="imageRef"
+        :alt="game.gameName"
+        :class="{
+          loading: isLoading,
+          error: hasError,
+          loaded: isLoaded,
+        }"
+      />
       <div v-if="isLoading" class="loading-placeholder">
         <div class="spinner"></div>
         <span class="loading-text">加载中...</span>
@@ -39,11 +43,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-import type { BingoGame } from '../types';
-import { useLazyImage } from '../composables/useLazyImage';
-import { useUrlParams } from '../composables/useUrlParams';
-import BingoDrawingModal from './BingoDrawingModal.vue';
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import type { BingoGame } from "../types";
+import { useLazyImage } from "../composables/useLazyImage";
+import { useUrlParams } from "../composables/useUrlParams";
+import BingoDrawingModal from "./BingoDrawingModal.vue";
 
 interface Props {
   game: BingoGame;
@@ -58,21 +62,20 @@ const showDrawingModal = ref(false);
 const { setGameParam, getGameNameFromFilename } = useUrlParams();
 
 // 使用懒加载composable
-const { isLoaded, isLoading, hasError, loadImage, setSrc } = useLazyImage(
-  imageRef,
-  props.game.githubUrl,
-  {
-    rootMargin: '100px', // 提前100px开始加载
-    threshold: 0.1
-  }
-);
+const { isLoaded, isLoading, hasError, loadImage, setSrc } = useLazyImage(imageRef, props.game.githubUrl, {
+  rootMargin: "100px", // 提前100px开始加载
+  threshold: 0.1,
+});
 
 // 当镜像切换导致githubUrl更新时，重载图片
-watch(() => props.game.githubUrl, (newUrl, oldUrl) => {
-  if (newUrl && newUrl !== oldUrl) {
-    setSrc(newUrl)
+watch(
+  () => props.game.githubUrl,
+  (newUrl, oldUrl) => {
+    if (newUrl && newUrl !== oldUrl) {
+      setSrc(newUrl);
+    }
   }
-})
+);
 
 // 重试加载功能
 const retryLoad = () => {
@@ -118,12 +121,12 @@ const handleOpenGameFromUrl = (event: CustomEvent) => {
 
 onMounted(() => {
   // 监听从URL打开游戏的事件
-  window.addEventListener('openGameFromUrl', handleOpenGameFromUrl as EventListener);
+  window.addEventListener("openGameFromUrl", handleOpenGameFromUrl as EventListener);
 });
 
 onUnmounted(() => {
   // 清理事件监听器
-  window.removeEventListener('openGameFromUrl', handleOpenGameFromUrl as EventListener);
+  window.removeEventListener("openGameFromUrl", handleOpenGameFromUrl as EventListener);
 });
 </script>
 
@@ -158,7 +161,7 @@ onUnmounted(() => {
   position: relative;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0;

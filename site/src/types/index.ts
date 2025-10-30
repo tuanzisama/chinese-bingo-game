@@ -30,19 +30,14 @@ export interface MirrorOption {
 // Provide/Inject 数据接口
 export interface BingoGamesContext {
   games: Ref<BingoGame[]>;
-  metadata: Ref<BingoGamesList['metadata'] | null>;
+  metadata: Ref<BingoGamesList["metadata"] | null>;
   loading: Ref<boolean>;
   error: Ref<string | null>;
   refetch: () => Promise<void>;
-  // 镜像相关
-  mirrorOptions: MirrorOption[];
-  mirrorPattern: Ref<string>;
-  setMirrorPattern: (pattern: string) => void;
-  applyMirror: (url: string) => string;
 }
 
 // Provide/Inject 的 key
-export const BINGO_GAMES_KEY = Symbol('bingoGames') as InjectionKey<BingoGamesContext>;
+export const BINGO_GAMES_KEY = Symbol("bingoGames") as InjectionKey<BingoGamesContext>;
 
 // 导入 Vue 类型
-import type { Ref, InjectionKey } from 'vue';
+import type { Ref, InjectionKey } from "vue";

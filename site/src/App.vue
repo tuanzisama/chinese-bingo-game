@@ -29,9 +29,11 @@ const handleUrlParam = async () => {
     if (targetGame) {
       // 等待DOM更新后触发自定义事件
       await nextTick();
-      window.dispatchEvent(new CustomEvent('openGameFromUrl', { 
-        detail: { game: targetGame } 
-      }));
+      window.dispatchEvent(
+        new CustomEvent("openGameFromUrl", {
+          detail: { game: targetGame },
+        })
+      );
     } else {
       console.warn(`未找到游戏: ${gameParam}`);
     }
@@ -39,11 +41,15 @@ const handleUrlParam = async () => {
 };
 
 // 监听游戏列表加载完成
-watch([games, loading], ([newGames, newLoading]) => {
-  if (!newLoading && newGames.length > 0) {
-    handleUrlParam();
-  }
-}, { immediate: true });
+watch(
+  [games, loading],
+  ([newGames, newLoading]) => {
+    if (!newLoading && newGames.length > 0) {
+      handleUrlParam();
+    }
+  },
+  { immediate: true }
+);
 
 // 提供数据给子组件
 provide(BINGO_GAMES_KEY, {
