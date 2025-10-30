@@ -5,7 +5,7 @@
       <span>
         当前共收录 <strong>{{ bingoGamesContext.metadata.value.totalCount }}</strong> 个游戏
       </span>
-      <span>✨</span>
+      <span class="divider-icon">✨</span>
       <span>最后更新：{{ bingoGamesContext.metadata.value.generatedAt }}</span>
     </div>
     <div class="actions">
@@ -195,15 +195,15 @@ const prUrl = computed(() =>
     h1 {
       font-size: 2rem;
     }
+  }
 
-    .actions {
-      flex-direction: column;
-      gap: 0.75rem;
-
-      .mirror-selector {
-        width: 100%;
-        justify-content: center;
-      }
+  .metadata {
+    span {
+      display: block;
+      margin-bottom: 4px;
+    }
+    .divider-icon {
+      display: none;
     }
   }
 }
