@@ -1,5 +1,6 @@
 import { ref, onMounted } from 'vue';
 import type { BingoGamesList, BingoGame } from '../types';
+import { useMirrorProxy } from './useMirrorProxy';
 
 export function useBingoGames() {
   const games = ref<BingoGame[]>([]);
@@ -7,19 +8,32 @@ export function useBingoGames() {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
+  // 使用镜像代理
+  const { transformUrl, transformGitHubRawUrl } = useMirrorProxy();
+
   const fetchGames = async () => {
     loading.value = true;
     error.value = null;
     
     try {
-      // 从项目根目录获取JSON数据
-      const response = await fetch(import.meta.env.VITE_BINGO_GAMES_RESOURCE_URL);
+      // 使用镜像代理转换URL
+      const originalUrl = import.meta.env.VITE_BINGO_GAMES_RESOURCE_URL;
+      const proxyUrl = transformUrl(originalUrl);
+
+      const response = await fetch(proxyUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data: BingoGamesList = await response.json();
-      games.value = data.games.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
+      
+      // 转换游戏数据中的GitHub URL为镜像URL
+      const gamesWithProxyUrls = data.games.map(game => ({
+        ...game,
+        githubUrl: transformGitHubRawUrl(game.githubUrl)
+      }));
+      
+      games.value = gamesWithProxyUrls.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
       metadata.value = data.metadata;
     } catch (err) {
       error.value = err instanceof Error ? err.message : '获取数据失败';
@@ -38,6 +52,7 @@ export function useBingoGames() {
     metadata,
     loading,
     error,
-    refetch: fetchGames
+    fetchGames, // 暴露fetchGames方法以便重新获取数据
+    refetch: fetchGames // 提供一个别名
   };
 }

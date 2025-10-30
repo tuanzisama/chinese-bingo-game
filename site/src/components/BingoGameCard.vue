@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import type { BingoGame } from '../types';
 import { useLazyImage } from '../composables/useLazyImage';
 import { useUrlParams } from '../composables/useUrlParams';
@@ -58,7 +58,7 @@ const showDrawingModal = ref(false);
 const { setGameParam, getGameNameFromFilename } = useUrlParams();
 
 // 使用懒加载composable
-const { isLoaded, isLoading, hasError, loadImage } = useLazyImage(
+const { isLoaded, isLoading, hasError, loadImage, setSrc } = useLazyImage(
   imageRef,
   props.game.githubUrl,
   {
@@ -66,6 +66,13 @@ const { isLoaded, isLoading, hasError, loadImage } = useLazyImage(
     threshold: 0.1
   }
 );
+
+// 当镜像切换导致githubUrl更新时，重载图片
+watch(() => props.game.githubUrl, (newUrl, oldUrl) => {
+  if (newUrl && newUrl !== oldUrl) {
+    setSrc(newUrl)
+  }
+})
 
 // 重试加载功能
 const retryLoad = () => {

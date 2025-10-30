@@ -14,6 +14,7 @@ export function useLazyImage(
   const isLoaded = ref(false)
   const isLoading = ref(false)
   const hasError = ref(false)
+  let currentSrc = src
   
   const {
     rootMargin = '50px',
@@ -33,7 +34,7 @@ export function useLazyImage(
     
     img.onload = () => {
       if (imageRef.value) {
-        imageRef.value.src = src
+        imageRef.value.src = currentSrc
         isLoaded.value = true
         isLoading.value = false
       }
@@ -44,11 +45,11 @@ export function useLazyImage(
       isLoading.value = false
       if (imageRef.value) {
         // 设置错误占位图
-        imageRef.value.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1IiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMSIvPjx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWKoOi9veWksei0pTwvdGV4dD48dGV4dCB4PSI1MCUiIHk9IjYwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjYmJiIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7or7fngrnlh7rlpI3or5U8L3RleHQ+PC9zdmc+'
+        imageRef.value.src = placeholder
       }
     }
 
-    img.src = src
+    img.src = currentSrc
   }
 
   const setupObserver = () => {
@@ -91,10 +92,20 @@ export function useLazyImage(
     }
   })
 
+  const setSrc = (newSrc: string) => {
+    currentSrc = newSrc
+    isLoaded.value = false
+    hasError.value = false
+    isLoading.value = false
+    // 如果图片元素已经在视口内，立即尝试加载新地址
+    loadImage()
+  }
+
   return {
     isLoaded,
     isLoading,
     hasError,
-    loadImage
+    loadImage,
+    setSrc
   }
 }

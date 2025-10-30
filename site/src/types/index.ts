@@ -21,6 +21,12 @@ export interface BingoGamesList {
   games: BingoGame[];
 }
 
+// 镜像选项类型
+export interface MirrorOption {
+  name: string;
+  pattern: string; // 使用 {path} 作为占位符
+}
+
 // Provide/Inject 数据接口
 export interface BingoGamesContext {
   games: Ref<BingoGame[]>;
@@ -28,6 +34,11 @@ export interface BingoGamesContext {
   loading: Ref<boolean>;
   error: Ref<string | null>;
   refetch: () => Promise<void>;
+  // 镜像相关
+  mirrorOptions: MirrorOption[];
+  mirrorPattern: Ref<string>;
+  setMirrorPattern: (pattern: string) => void;
+  applyMirror: (url: string) => string;
 }
 
 // Provide/Inject 的 key
