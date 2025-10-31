@@ -58,7 +58,7 @@ const filteredGames = computed(() => {
   }
 
   // 默认按名称排序
-  filtered.sort((a, b) => a.gameName.localeCompare(b.gameName, "zh-CN"));
+  filtered.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
 
   return filtered;
 });
