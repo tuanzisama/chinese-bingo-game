@@ -15,8 +15,12 @@
 
     <!-- 错误状态 -->
     <div v-else-if="error" class="error-state">
-      <p>{{ error }}</p>
-      <button @click="refetch" class="retry-button">重试</button>
+      <p class="error-text">加载失败：{{ error }}</p>
+      <p class="error-hint">可尝试切换镜像来重新加载</p>
+      <div class="error-actions">
+        <button @click="refetch" class="retry-button">重试</button>
+        <button @click="focusMirrorSelect" class="mirror-button">切换镜像</button>
+      </div>
     </div>
 
     <!-- 游戏网格 -->
@@ -46,6 +50,23 @@ if (!bingoGamesContext) {
 const { games, loading, error, refetch } = bingoGamesContext;
 
 const searchQuery = ref("");
+
+// 引导用户切换镜像：定位并聚焦到 AppHeader 内的镜像选择器
+const focusMirrorSelect = () => {
+  const selectEl = document.getElementById("mirror-select");
+  if (selectEl) {
+    // 滚动到视图中央并聚焦
+    selectEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    (selectEl as HTMLSelectElement).focus();
+
+    // 高亮其容器以增强视觉引导
+    const container = selectEl.closest(".mirror-selector");
+    if (container) {
+      container.classList.add("attention-blink");
+      setTimeout(() => container.classList.remove("attention-blink"), 2000);
+    }
+  }
+};
 
 // 筛选后的游戏列表（只保留搜索功能）
 const filteredGames = computed(() => {
@@ -103,6 +124,22 @@ const filteredGames = computed(() => {
   color: #666;
 }
 
+.error-text {
+  margin-bottom: 8px;
+}
+
+.error-hint {
+  margin: 0 auto 16px;
+  max-width: 680px;
+  color: #888;
+  font-size: 14px;
+}
+
+.error-actions {
+  display: inline-flex;
+  gap: 12px;
+}
+
 .spinner-large {
   width: 48px;
   height: 48px;
@@ -117,6 +154,7 @@ const filteredGames = computed(() => {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -138,6 +176,22 @@ const filteredGames = computed(() => {
   }
 }
 
+.mirror-button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: #fff;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
 .games-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -153,5 +207,11 @@ const filteredGames = computed(() => {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
   }
+}
+
+/* 全局：镜像选择器的临时高亮效果 */
+:global(.mirror-selector.attention-blink) {
+  border: 1px solid #007bff !important;
+  box-shadow: 0 0 0 6px rgba(0, 123, 255, 0.15);
 }
 </style>

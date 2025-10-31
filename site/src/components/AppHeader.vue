@@ -125,10 +125,21 @@ const prUrl = computed(() =>
         border-radius: 6px;
         font-size: 0.9rem;
         cursor: pointer;
+        &:focus {
+          outline: 2px solid #007bff;
+          outline-offset: 2px;
+          box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+        }
       }
 
       &:hover {
         border: 1px solid #007bff;
+      }
+
+      /* 当子元素聚焦时，容器也高亮，增强引导效果 */
+      &:focus-within {
+        border: 1px solid #007bff;
+        box-shadow: 0 0 0 6px rgba(0, 123, 255, 0.12);
       }
     }
 
