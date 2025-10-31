@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "totalCount": 69,
-    "generatedAt": "2025/10/30 10:54:26",
+    "totalCount": 71,
+    "generatedAt": "2025/10/31 13:14:05",
     "repository": "tuanzisama/chinese-bingo-game",
     "branch": "main"
   },
@@ -16,6 +16,17 @@
       "extension": ".png",
       "createdAt": "2024/8/10 10:30:01",
       "lastModified": "2024/8/10 10:30:01"
+    },
+    {
+      "filename": "搬屎高手.jpg",
+      "gameName": "搬屎高手",
+      "description": "连成线建议退网",
+      "fileSize": 124393,
+      "fileSizeFormatted": "121.48 KB",
+      "githubUrl": "https://raw.githubusercontent.com/tuanzisama/chinese-bingo-game/main/bingo-games/%E6%90%AC%E5%B1%8E%E9%AB%98%E6%89%8B.jpg",
+      "extension": ".jpg",
+      "createdAt": "2025/10/31 13:13:39",
+      "lastModified": "2025/10/31 13:13:39"
     },
     {
       "filename": "本群活的不赖.jpg",
@@ -82,6 +93,17 @@
       "extension": ".jpg",
       "createdAt": "2025/10/30 09:13:45",
       "lastModified": "2025/10/30 09:13:45"
+    },
+    {
+      "filename": "纯良.jpg",
+      "gameName": "纯良",
+      "description": "连成线你就是纯良人",
+      "fileSize": 117895,
+      "fileSizeFormatted": "115.13 KB",
+      "githubUrl": "https://raw.githubusercontent.com/tuanzisama/chinese-bingo-game/main/bingo-games/%E7%BA%AF%E8%89%AF.jpg",
+      "extension": ".jpg",
+      "createdAt": "2025/10/31 13:13:39",
+      "lastModified": "2025/10/31 13:13:39"
     },
     {
       "filename": "当代年轻人.jpg",
