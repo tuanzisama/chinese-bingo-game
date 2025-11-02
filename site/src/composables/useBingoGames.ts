@@ -33,7 +33,7 @@ export function useBingoGames() {
         githubUrl: transformGitHubRawUrl(game.githubUrl)
       }));
       
-      games.value = gamesWithProxyUrls.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
+      games.value = gamesWithProxyUrls;
       metadata.value = data.metadata;
     } catch (err) {
       error.value = err instanceof Error ? err.message : '获取数据失败';

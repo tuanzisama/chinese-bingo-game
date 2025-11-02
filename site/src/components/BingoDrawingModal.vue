@@ -20,7 +20,7 @@
           </div>
 
           <div class="tool-group">
-            <button @click="clearCanvas" class="tool-btn clear-btn">清除画布</button>
+            <button @click="resetCanvas" class="tool-btn clear-btn">清除画布</button>
             <button @click="toggleEraser" :class="['tool-btn', { active: isErasing }]">
               {{ isErasing ? "画笔模式" : "橡皮擦" }}
             </button>
@@ -35,7 +35,6 @@
       <div class="modal-actions">
         <button @click="downloadCanvas" class="action-btn download-btn">📥 下载图片</button>
         <button @click="copyCanvas" class="action-btn copy-btn">📋 复制到剪贴板</button>
-        <button @click="resetCanvas" class="action-btn reset-btn">🔄 重置画布</button>
       </div>
     </div>
   </div>
@@ -280,22 +279,6 @@ const toggleEraser = () => {
     setEraserMode();
   }
 };
-
-// 清除画布（保留背景图片）
-const clearCanvas = () => {
-  if (!fabricCanvas.value) return;
-
-  const objects = fabricCanvas.value.getObjects();
-  const backgroundImg = objects[0]; // 假设背景图片是第一个对象
-
-  fabricCanvas.value.clear();
-  if (backgroundImg && backgroundImg.type === "image") {
-    fabricCanvas.value.add(backgroundImg);
-  }
-  fabricCanvas.value.backgroundColor = "white";
-  fabricCanvas.value.renderAll();
-};
-
 // 重置画布
 const resetCanvas = async () => {
   if (!fabricCanvas.value) return;
@@ -367,7 +350,7 @@ const handlePopState = () => {
 };
 
 onMounted(() => {
-  isSmallScreen.value = window.innerWidth <= 768;
+  isSmallScreen.value = window.innerWidth <= 768 || window.innerHeight <= 768;
   canvasPadding.bottom = isSmallScreen.value ? 50 : 20;
   watermarkHeight.value = isSmallScreen.value ? 60 : 40;
   initCanvas();

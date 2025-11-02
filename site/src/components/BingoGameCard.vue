@@ -28,10 +28,10 @@
     <div class="card-content">
       <h3 class="game-title">{{ game.gameName }}</h3>
       <p v-if="game.description" class="game-description">{{ game.description }}</p>
-      <div class="game-meta">
+      <!-- <div class="game-meta">
         <span class="file-size">{{ game.fileSizeFormatted }}</span>
         <span class="file-type">{{ game.extension.toLowerCase() }}</span>
-      </div>
+      </div> -->
       <div class="game-dates">
         <small>最后更新时间: {{ game.lastModified }}</small>
       </div>

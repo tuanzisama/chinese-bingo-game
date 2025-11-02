@@ -123,13 +123,13 @@ function loadMappings() {
     if (fs.existsSync(MAPPINGS_FILE)) {
       const mappingsContent = fs.readFileSync(MAPPINGS_FILE, 'utf8');
       const mappings = JSON.parse(mappingsContent);
-      
+
       // 创建一个Map用于快速查找
       const mappingsMap = new Map();
       mappings.forEach(item => {
         mappingsMap.set(item.fileName, item.description || '');
       });
-      
+
       return mappingsMap;
     } else {
       console.warn(`⚠️  Mappings file ${MAPPINGS_FILE} not found. Descriptions will be empty.`);
@@ -212,7 +212,7 @@ function generateBingoGamesList() {
           commitCount: gitInfo.commitCount,
         };
       })
-      .sort((a, b) => a.gameName.localeCompare(b.gameName, 'zh-CN')); // 按中文排序
+      .sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime()); // 按最后修改时间排序
 
     // 计算时间统计信息
     const gamesWithGitInfo = bingoGames.filter(game => game.createdAt && game.lastModified);
