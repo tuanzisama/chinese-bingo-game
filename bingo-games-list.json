@@ -1,11 +1,22 @@
 {
   "metadata": {
-    "totalCount": 72,
-    "generatedAt": "2025/10/31 13:19:42",
+    "totalCount": 73,
+    "generatedAt": "2025/11/3 00:22:39",
     "repository": "tuanzisama/chinese-bingo-game",
     "branch": "main"
   },
   "games": [
+    {
+      "filename": "抽象聊天群.jpg",
+      "gameName": "抽象聊天群",
+      "description": "五个连成一线，你所在的这个群极其抽象！",
+      "fileSize": 177813,
+      "fileSizeFormatted": "173.65 KB",
+      "githubUrl": "https://raw.githubusercontent.com/tuanzisama/chinese-bingo-game/main/bingo-games/%E6%8A%BD%E8%B1%A1%E8%81%8A%E5%A4%A9%E7%BE%A4.jpg",
+      "extension": ".jpg",
+      "createdAt": "2025/11/3 00:21:50",
+      "lastModified": "2025/11/3 00:21:50"
+    },
     {
       "filename": "Galgame引流最爱.jpg",
       "gameName": "Galgame引流最爱",
