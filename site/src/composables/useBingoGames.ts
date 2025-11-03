@@ -20,7 +20,12 @@ export function useBingoGames() {
       const originalUrl = import.meta.env.VITE_BINGO_GAMES_RESOURCE_URL;
       const proxyUrl = transformUrl(originalUrl);
 
-      const response = await fetch(proxyUrl);
+      const url = new URL(proxyUrl);
+      url.searchParams.append('_t', Date.now().toString()); // prevent cache
+
+      const response = await fetch(url.toString(), {
+        cache: 'no-cache',
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
