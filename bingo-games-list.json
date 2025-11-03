@@ -1,22 +1,11 @@
 {
   "metadata": {
-    "totalCount": 95,
-    "generatedAt": "2025/11/3 15:06:43",
+    "totalCount": 94,
+    "generatedAt": "2025/11/3 15:08:39",
     "repository": "tuanzisama/chinese-bingo-game",
     "branch": "main"
   },
   "games": [
-    {
-      "filename": "Good青春-极难版.jpg",
-      "gameName": "Good青春-极难版",
-      "description": "五个连成一条线，说明你有个非常幸福的青春，恭喜你！",
-      "fileSize": 254531,
-      "fileSizeFormatted": "248.57 KB",
-      "githubUrl": "https://raw.githubusercontent.com/tuanzisama/chinese-bingo-game/main/bingo-games/Good%E9%9D%92%E6%98%A5-%E6%9E%81%E9%9A%BE%E7%89%88.jpg",
-      "extension": ".jpg",
-      "createdAt": "2025/11/3 15:05:26",
-      "lastModified": "2025/11/3 15:05:26"
-    },
     {
       "filename": "二游.png",
       "gameName": "二游",
