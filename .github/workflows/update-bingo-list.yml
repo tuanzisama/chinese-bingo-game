@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - 'bingo-games/**'
+      - 'scripts/generate-bingo-list.js'
   pull_request:
     paths:
       - 'bingo-games/**'
+      - 'scripts/generate-bingo-list.js'
   workflow_dispatch: # 允许手动触发
 
 jobs:
