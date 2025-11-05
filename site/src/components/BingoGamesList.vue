@@ -3,7 +3,7 @@
     <!-- 搜索 -->
     <div class="controls">
       <div class="search-box">
-        <input v-model="searchQuery" type="text" placeholder="搜索游戏名称或描述..." class="search-input" />
+        <input v-model="searchQuery" type="text" placeholder="搜索名称、描述、标签或作者..." class="search-input" />
       </div>
     </div>
 
@@ -74,12 +74,21 @@ const filteredGames = computed(() => {
 
   // 搜索筛选
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    filtered = filtered.filter((game) => game.gameName.toLowerCase().includes(query) || game.description.toLowerCase().includes(query));
+    const query = searchQuery.value.toLowerCase().trim();
+    filtered = filtered.filter((game) => {
+      const nameMatch = game.gameName?.toLowerCase().includes(query);
+      const descMatch = game.description?.toLowerCase().includes(query);
+      const authorMatch = game.author?.toLowerCase().includes(query);
+      const tagsMatch = Array.isArray(game.tags) && game.tags.some((t) => t.toLowerCase().includes(query));
+      return nameMatch || descMatch || authorMatch || tagsMatch;
+    });
   }
 
   // 默认按名称排序
-  filtered.sort((a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime());
+  filtered.sort((a, b) => {
+    const timeDiff = new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime();
+    return timeDiff !== 0 ? timeDiff : a.filename.localeCompare(b.filename);
+  });
 
   return filtered;
 });
