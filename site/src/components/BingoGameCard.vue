@@ -28,6 +28,12 @@
     <div class="card-content">
       <h3 class="game-title">{{ game.gameName }}</h3>
       <p v-if="game.description" class="game-description">{{ game.description }}</p>
+      <div v-if="game.author" class="game-author">
+        <small>作者：{{ game.author }}</small>
+      </div>
+      <div v-if="game.tags && game.tags.length" class="game-tags">
+        <span v-for="tag in game.tags" :key="tag" class="tag-chip">{{ tag }}</span>
+      </div>
       <!-- <div class="game-meta">
         <span class="file-size">{{ game.fileSizeFormatted }}</span>
         <span class="file-type">{{ game.extension.toLowerCase() }}</span>
@@ -301,7 +307,29 @@ onUnmounted(() => {
   color: #666;
   font-size: 14px;
   line-height: 1.4;
-  flex: 1;
+}
+
+.game-author {
+  color: #777;
+  font-size: 12px;
+  margin: 0 0 8px 0;
+}
+
+.game-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px 0;
+}
+
+.tag-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #555;
+  border: 1px solid #e0e0e0;
 }
 
 .game-meta {
