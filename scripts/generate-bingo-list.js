@@ -127,7 +127,7 @@ function loadMappings() {
       // 创建一个Map用于快速查找
       const mappingsMap = new Map();
       mappings.forEach(item => {
-        mappingsMap.set(item.fileName, item.description || '');
+        mappingsMap.set(item.fileName, item);
       });
 
       return mappingsMap;
@@ -196,12 +196,14 @@ function generateBingoGamesList() {
         };
 
         // 从mappings中获取描述信息
-        const description = mappingsMap.get(filename) || '';
+        const mapping = mappingsMap.get(filename) || {};
 
         return {
           filename: filename,
           gameName: gameName,
-          description: description,
+          description: mapping.description || '',
+          author: mapping.author || '',
+          tags: mapping.tags || [],
           fileSize: fileSize,
           fileSizeFormatted: formatFileSize(fileSize),
           githubUrl: githubUrl,
