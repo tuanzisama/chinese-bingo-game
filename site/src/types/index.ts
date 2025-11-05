@@ -3,6 +3,8 @@ export interface BingoGame {
   filename: string;
   gameName: string;
   description: string;
+  author: string;
+  tags: string[];
   fileSize: number;
   fileSizeFormatted: string;
   githubUrl: string;
