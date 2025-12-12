@@ -17,27 +17,27 @@ export const MIRROR_CONFIGS: MirrorConfig[] = [
   {
     id: "cloudflare-ipv4",
     name: "Cloudflare (IPv4)",
-    pattern: "https://gh-proxy.com/{path}",
+    pattern: "https://gh-proxy.org/{path}",
   },
   {
     id: "cloudflare-ipv6",
     name: "Cloudflare (IPv6)",
-    pattern: "https://v6.gh-proxy.com/{path}",
+    pattern: "https://v6.gh-proxy.org/{path}",
   },
   {
     id: "hongkong-cdn",
     name: "香港 CDN",
-    pattern: "https://hk.gh-proxy.com/{path}",
+    pattern: "https://hk.gh-proxy.org/{path}",
   },
   {
     id: "fastly-cdn",
     name: "Fastly CDN",
-    pattern: "https://cdn.gh-proxy.com/{path}",
+    pattern: "https://cdn.gh-proxy.org/{path}",
   },
   {
     id: "edgeone-global",
     name: "EdgeOne 全球",
-    pattern: "https://edgeone.gh-proxy.com/{path}",
+    pattern: "https://edgeone.gh-proxy.org/{path}",
   },
 ];
 
